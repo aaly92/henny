@@ -1,0 +1,13 @@
+.form-signin {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  margin: 200px auto;
+  input {
+    margin-bottom: 15px;
+    &#inputPassword {
+      margin-bottom: 30px;
+    }
+  }
+}

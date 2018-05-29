@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent implements OnInit {
-  private user = { email: '', password: '' };
+  public user = { email: '', password: '' };
   constructor(private auth: AuthService) {}
 
   ngOnInit() {}

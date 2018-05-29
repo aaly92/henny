@@ -1,10 +1,12 @@
 <div class="col-8 card col-xl-3 col-md-4 text-center form-signin">
   <div class="card-body">
-    <form class="">
+    <form #formCtrl="ngForm" class="form-group">
       <img class="mb-4 text-center" src="../assets/h.png" width="120">
-      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+      <input [(ngModel)]="user.email" type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address"
+        required autofocus>
+      <input [(ngModel)]="user.password" type="password" name="password" id="inputPassword" class="form-control" placeholder="Password"
+        required>
+      <button [disabled]="formCtrl.form.invalid" (click)="login()" class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
     </form>
   </div>
 </div>

@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { AppUser } from '../_models/app.user';
 import { UserService } from './user.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +18,7 @@ export class AuthService {
     private userService: UserService,
     private afAuth: AngularFireAuth,
     private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.user$ = afAuth.authState;
   }
@@ -33,7 +34,7 @@ export class AuthService {
 
   logout() {
     this.afAuth.auth.signOut().then(result => {
-      this.router.navigate(['/']);
+      this.router.navigate(['../login'], { relativeTo: this.route });
     });
   }
 

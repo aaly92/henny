@@ -11,15 +11,22 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { RouterModule } from '@angular/router';
 import { RoutingModule, routingComponents } from './routing/routing.module';
+import { AgmCoreModule } from '@agm/core';
 import { AuthGuardService } from './_guards/auth-guard.service';
+import { MapComponent } from './map/map.component';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, routingComponents],
+  declarations: [AppComponent, HomeComponent, routingComponents, MapComponent],
   imports: [
     BrowserModule,
     RouterModule,
     RoutingModule,
     LoginModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBL-IcijcD23KaQFjzDyAHaJPd_GfkDCy4',
+    }),
+    AgmSnazzyInfoWindowModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,

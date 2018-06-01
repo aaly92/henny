@@ -47,7 +47,7 @@ export class MapComponent implements OnInit {
 
     this.searchControl = new FormControl();
 
-    // this.setCurrentPosition();
+    this.setCurrentPosition();
 
     this.mapsAPILoader.load().then(() => {
       const autocomplete = new google.maps.places.Autocomplete(
@@ -64,8 +64,6 @@ export class MapComponent implements OnInit {
             return;
           }
 
-          // this.lat = place.geometry.location.lat();
-          // this.long = place.geometry.location.lng();
           this.mapService.save(
             new Location(
               place.name,

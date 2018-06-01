@@ -1,4 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  NgZone,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MapsAPILoader } from '@agm/core';
+import {} from '@types/googlemaps';
+import { MapService } from '../_services/map.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Location } from '../_models/location.model';
 
 @Component({
   selector: 'hny-map',
@@ -6,28 +18,73 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
-  public locations = [
-    {
-      label: 'Parque Chapultepeca',
-      latitude: 19.419481,
-      longitude: -99.189456,
-      url: '',
-    },
-    {
-      label: 'Bósforo',
-      latitude: 19.4330942,
-      longitude: -99.1448319,
-      url: '',
-    },
-  ];
-  constructor() {}
+  public lat: number;
+  public long: number;
+  public searchControl: FormControl;
+  public zoom: number;
 
-  zoom = 12;
+  public locations = [];
+  public locationSubscription: Subscription;
 
-  lat = 19.419481;
-  lng = -99.189456;
+  @ViewChild('search') public searchElementRef: ElementRef;
+
+  constructor(
+    private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone,
+    private mapService: MapService,
+  ) {
+    this.locationSubscription = this.mapService
+      .getAll()
+      .subscribe(locations => {
+        this.locations = locations;
+      });
+  }
 
   ngOnInit() {
-    console.log(this.locations);
+    this.lat = 19.419481;
+    this.long = -99.189456;
+    this.zoom = 12;
+
+    this.searchControl = new FormControl();
+
+    // this.setCurrentPosition();
+
+    this.mapsAPILoader.load().then(() => {
+      const autocomplete = new google.maps.places.Autocomplete(
+        this.searchElementRef.nativeElement,
+        {
+          types: ['address'],
+        },
+      );
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+
+          // this.lat = place.geometry.location.lat();
+          // this.long = place.geometry.location.lng();
+          this.mapService.save(
+            new Location(
+              place.name,
+              place.geometry.location.lng(),
+              place.geometry.location.lat(),
+            ),
+          );
+        });
+      });
+    });
+  }
+
+  private setCurrentPosition() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.lat = position.coords.latitude;
+        this.long = position.coords.longitude;
+        this.zoom = 12;
+      });
+    }
   }
 }

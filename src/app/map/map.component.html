@@ -1,10 +1,17 @@
-<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false">
-  <agm-marker *ngFor="let m of locations; let i = index" [latitude]="m.latitude" [longitude]="m.longitude" [label]="m.label"
-    [markerDraggable]="true">
-    <div class="hey">{{ m | json }}</div>
-    <agm-snazzy-info-window [closeOnMapClick]="true" [closeWhenOthersOpen]="true">
-      <ng-template>
-      </ng-template>
-    </agm-snazzy-info-window>
-  </agm-marker>
-</agm-map>
+<div class="container">
+  <h1>Angular 2 + Google Maps Places Autocomplete</h1>
+  <div class="form-group">
+    <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control"
+      #search [formControl]="searchControl">
+  </div>
+
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false">
+    <agm-marker *ngFor="let m of locations; let i = index" [latitude]="m.lat" [longitude]="m.long" [label]="m.label" [markerDraggable]="true">
+      <agm-snazzy-info-window [closeOnMapClick]="true" [closeWhenOthersOpen]="true">
+        <ng-template>
+          <div>{{ m | json }}</div>
+        </ng-template>
+      </agm-snazzy-info-window>
+    </agm-marker>
+  </agm-map>
+</div>

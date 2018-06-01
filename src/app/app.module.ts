@@ -15,6 +15,8 @@ import { AgmCoreModule } from '@agm/core';
 import { AuthGuardService } from './_guards/auth-guard.service';
 import { MapComponent } from './map/map.component';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MapService } from './_services/map.service';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, routingComponents, MapComponent],
@@ -25,13 +27,16 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
     LoginModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBL-IcijcD23KaQFjzDyAHaJPd_GfkDCy4',
+      libraries: ['places'],
     }),
+    FormsModule,
+    ReactiveFormsModule,
     AgmSnazzyInfoWindowModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
   ],
-  providers: [AuthGuardService],
+  providers: [AuthGuardService, MapService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
